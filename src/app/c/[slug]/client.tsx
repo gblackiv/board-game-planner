@@ -1,6 +1,6 @@
 "use client";
 
-import { useOptimistic, useTransition } from "react";
+import { useState } from "react";
 import { CalendarGrid } from "@/components/CalendarGrid";
 import { toggleAvailability } from "@/actions/availability";
 
@@ -10,27 +10,20 @@ interface CoupleCalendarClientProps {
 }
 
 export function CoupleCalendarClient({ coupleId, initialDates }: CoupleCalendarClientProps) {
-  const [isPending, startTransition] = useTransition();
-  const [optimisticDates, setOptimisticDates] = useOptimistic(
-    initialDates,
-    (current: string[], date: string) => {
-      if (current.includes(date)) {
-        return current.filter((d) => d !== date);
-      }
-      return [...current, date];
-    }
-  );
+  const [dates, setDates] = useState<string[]>(initialDates);
 
-  function handleToggle(date: string) {
-    startTransition(async () => {
-      setOptimisticDates(date);
-      await toggleAvailability(coupleId, date);
-    });
+  async function handleToggle(date: string) {
+    if (dates.includes(date)) {
+      setDates(dates.filter((d) => d !== date));
+    } else {
+      setDates([...dates, date]);
+    }
+    await toggleAvailability(coupleId, date);
   }
 
   return (
-    <div className={isPending ? "opacity-90" : ""}>
-      <CalendarGrid availableDates={optimisticDates} onToggle={handleToggle} />
+    <div>
+      <CalendarGrid availableDates={dates} onToggle={handleToggle} />
     </div>
   );
 }
