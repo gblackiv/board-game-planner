@@ -11,9 +11,10 @@ interface CalendarGridProps {
   readOnly?: boolean;
   counts?: Record<string, number>;
   totalCouples?: number;
+  attendees?: Record<string, string[]>;
 }
 
-export function CalendarGrid({ availableDates, onToggle, readOnly, counts, totalCouples }: CalendarGridProps) {
+export function CalendarGrid({ availableDates, onToggle, readOnly, counts, totalCouples, attendees }: CalendarGridProps) {
   const dates = getRollingWindow();
   const availableSet = new Set(availableDates);
 
@@ -42,6 +43,7 @@ export function CalendarGrid({ availableDates, onToggle, readOnly, counts, total
             readOnly={readOnly}
             count={counts?.[date]}
             totalCouples={totalCouples}
+            attendees={attendees?.[date]}
           />
         ))}
       </div>

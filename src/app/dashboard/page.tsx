@@ -83,6 +83,7 @@ export default async function DashboardPage() {
           readOnly
           counts={counts}
           totalCouples={totalCouples}
+          attendees={attendees}
         />
 
         <div className="mt-4 flex justify-center">
