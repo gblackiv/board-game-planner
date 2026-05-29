@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { getAvailability } from "@/actions/availability";
@@ -25,6 +26,12 @@ export default async function CoupleCalendarPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-8">
       <div className="max-w-md mx-auto">
+        <Link
+          href="/dashboard"
+          className="text-sm text-blue-600 hover:text-blue-800 mb-4 inline-block"
+        >
+          &larr; Dashboard
+        </Link>
         <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">
           {couple.name}
         </h1>

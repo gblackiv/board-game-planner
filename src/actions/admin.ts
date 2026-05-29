@@ -13,11 +13,15 @@ export interface Couple {
 export async function addCouple(name: string): Promise<Couple> {
   const slug = generateSlug(name);
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("couples")
     .insert({ name, slug })
     .select()
     .single();
+
+  if (error) {
+    throw new Error(`Failed to add couple: ${error.message}`);
+  }
 
   return data as Couple;
 }

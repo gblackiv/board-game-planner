@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { getRollingWindow } from "@/lib/dates";
 import { CalendarGrid } from "@/components/CalendarGrid";
@@ -18,7 +19,8 @@ export default async function DashboardPage() {
 
   const { data: couples } = await supabase
     .from("couples")
-    .select("id, name");
+    .select("id, name, slug")
+    .order("name");
 
   const { data: availability } = await supabase
     .from("availability")
@@ -86,6 +88,23 @@ export default async function DashboardPage() {
         <div className="mt-4 flex justify-center">
           <HeatLegend />
         </div>
+
+        {couples && couples.length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-sm font-semibold text-gray-700 mb-2">Your Page</h2>
+            <div className="space-y-2">
+              {couples.map((couple) => (
+                <Link
+                  key={couple.id}
+                  href={`/c/${couple.slug}`}
+                  className="block bg-white rounded-lg p-3 shadow-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 transition-colors"
+                >
+                  {couple.name} &rarr;
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
