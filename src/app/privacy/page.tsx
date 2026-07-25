@@ -67,6 +67,17 @@ export default function PrivacyPage() {
             <h2 className="font-semibold text-gray-900 mb-1">Contact</h2>
             <p>Questions about this policy? Reach out to the group organizer.</p>
           </section>
+
+          <section>
+            <h2 className="font-semibold text-gray-900 mb-1">Terms</h2>
+            <p>
+              See our{" "}
+              <Link href="/terms" className="text-blue-600 hover:text-blue-800">
+                Terms &amp; Conditions
+              </Link>{" "}
+              for details on the SMS messaging program.
+            </p>
+          </section>
         </div>
       </div>
     </div>
