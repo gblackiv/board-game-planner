@@ -15,6 +15,7 @@ vi.mock("@/lib/dates", () => ({
     const diff = (target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
     return diff >= 0 && diff < 28;
   },
+  formatDate: () => "2026-06-01",
 }));
 
 import { toggleAvailability, getAvailability } from "@/actions/availability";

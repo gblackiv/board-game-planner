@@ -8,7 +8,7 @@ describe("getRollingWindow", () => {
 
   it("returns 28 dates starting from today", () => {
     vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-06-01"));
+    vi.setSystemTime(new Date(2026, 5, 1));
 
     const window = getRollingWindow();
 
@@ -19,12 +19,23 @@ describe("getRollingWindow", () => {
 
   it("formats dates as YYYY-MM-DD strings", () => {
     vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-12-30"));
+    vi.setSystemTime(new Date(2026, 11, 30));
 
     const window = getRollingWindow();
 
     expect(window[0]).toBe("2026-12-30");
     expect(window[2]).toBe("2027-01-01");
+  });
+
+  it("starts from today in local time, even late in the evening", () => {
+    vi.useFakeTimers();
+    // 9:02 PM local time on Jul 24 — in timezones behind UTC, the UTC
+    // calendar date has already rolled over to Jul 25 at this point.
+    vi.setSystemTime(new Date(2026, 6, 24, 21, 2));
+
+    const window = getRollingWindow();
+
+    expect(window[0]).toBe("2026-07-24");
   });
 });
 
@@ -35,7 +46,7 @@ describe("isWithinWindow", () => {
 
   it("returns true for dates within the 28-day window", () => {
     vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-06-01"));
+    vi.setSystemTime(new Date(2026, 5, 1));
 
     expect(isWithinWindow("2026-06-01")).toBe(true);
     expect(isWithinWindow("2026-06-28")).toBe(true);
@@ -43,7 +54,7 @@ describe("isWithinWindow", () => {
 
   it("returns false for dates outside the window", () => {
     vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-06-01"));
+    vi.setSystemTime(new Date(2026, 5, 1));
 
     expect(isWithinWindow("2026-05-31")).toBe(false);
     expect(isWithinWindow("2026-06-29")).toBe(false);

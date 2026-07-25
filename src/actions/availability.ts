@@ -1,7 +1,7 @@
 "use server";
 
 import { supabase } from "@/lib/supabase";
-import { isWithinWindow } from "@/lib/dates";
+import { isWithinWindow, formatDate } from "@/lib/dates";
 
 export async function toggleAvailability(
   coupleId: string,
@@ -35,7 +35,7 @@ export async function toggleAvailability(
 }
 
 export async function getAvailability(coupleId: string): Promise<string[]> {
-  const today = new Date().toISOString().split("T")[0];
+  const today = formatDate(new Date());
 
   const { data } = await supabase
     .from("availability")
